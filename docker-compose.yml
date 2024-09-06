@@ -1,0 +1,61 @@
+services:
+  # Base de datos PostgeSQL
+  postgres:
+    image: postgres:13
+    container_name: dev_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: basket-price
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "54322:5432"
+    networks:
+      - dev_network
+
+  # Backend - NestJS
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dev_backend
+    environment:
+      DATA_URL: postgres://postgres:postgres@postgres:5432/myapp
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+    networks:
+      - dev_network
+  
+  # FrontEnd -  Angular
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dev_frontend
+    ports:
+      - "4201:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      API_URL: http://localhost:3001
+    networks:
+      - dev_network
+    stdin_open: true
+    tty: true
+
+# Volumenes para la base de datos
+volumes:
+  postgres_data:
+
+# Red compartida entre los servicios
+networks:
+  dev_network:
+    driver: bridge
+    
