@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('API Example')
-    .setDescription('The API description')
+    .setTitle('Canasta Familiar')
+    .setDescription('Registro de los precios de la Canasta Familiar...')
     .setVersion('1.0')
     .build();
 
