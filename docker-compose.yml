@@ -17,7 +17,7 @@ services:
   # Backend - NestJS
   backend:
     build: 
-      context: ./backend
+      context: ./basket-price-back
       dockerfile: Dockerfile
     container_name: dev_backend
     environment:
@@ -25,7 +25,7 @@ services:
     ports:
       - "3001:3000"
     volumes:
-      - ./backend:/app
+      - ./basket-price-back:/app
       - /app/node_modules
     depends_on:
       - postgres
@@ -35,13 +35,13 @@ services:
   # FrontEnd -  Angular
   frontend:
     build:
-      context: ./frontend
+      context: ./basket-price-front
       dockerfile: Dockerfile
     container_name: dev_frontend
     ports:
       - "4201:4200"
     volumes:
-      - ./frontend:/app
+      - ./basket-price-front:/app
       - /app/node_modules
     environment:
       API_URL: http://localhost:3001
