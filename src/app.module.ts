@@ -1,24 +1,23 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsersModule } from './modules/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DepartmentModule } from './modules/department/department.module';
 
 @Module({
-  imports: [
+  imports: [ 
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres',
       port: 5432,
-      password: 'admin',
-      username: 'postgres',
-      entities: [],
+      username: 'admin',
+      password: 'root',
+      entities: ['User'],
       database: 'basket-price',
-      synchronize: true,
-      logging: true,
+      autoLoadEntities: true,
+      synchronize: true
     }),
-    DepartmentModule
-  ],
+    UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
